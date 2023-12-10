@@ -1,4 +1,4 @@
-package com.xma;
+package com.xma.task1;
 
 import java.time.LocalDate;
 

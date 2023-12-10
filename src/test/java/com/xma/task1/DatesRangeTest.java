@@ -1,5 +1,6 @@
-package com.xma;
+package com.xma.task1;
 
+import com.xma.task1.DatesRange;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
