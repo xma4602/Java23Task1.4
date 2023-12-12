@@ -1,11 +1,11 @@
 package com.xma.task3;
 
-public class Purchase {
-    private ProductSupplier supplier;
-    private Station station;
+public class Shipment {
+    private final ProductSupplier supplier;
+    private final Station station;
     private int volume;
 
-    public Purchase(ProductSupplier supplier, Station station) {
+    public Shipment(ProductSupplier supplier, Station station) {
         this.supplier = supplier;
         this.station = station;
     }

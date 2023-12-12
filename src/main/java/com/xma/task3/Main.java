@@ -14,9 +14,9 @@ public class Main {
         //inputVolumes();
         setVolumes();
 
-        PurchaseResolver resolver = new PurchaseResolver(Arrays.copyOf(suppliers, suppliers.length), stations);
-        Purchase[] purchases = resolver.resolve();
-        PurchaseFormatter formatter = new PurchaseFormatter(purchases);
+        ShipmentResolver resolver = new SimpleShipmentResolver();
+        Shipment[] shipments = resolver.resolve(Arrays.copyOf(suppliers, suppliers.length), stations);
+        ShipmentFormatter formatter = new ShipmentFormatter(shipments);
         System.out.println(formatter.formatFor(suppliers, stations));
     }
 

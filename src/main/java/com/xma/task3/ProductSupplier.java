@@ -3,12 +3,21 @@ package com.xma.task3;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * поставщик топлива
+ */
 public class ProductSupplier {
 
-    private int supplierNumber;
+    /**
+     * поряднывый номер поставщика в системе
+     */
+    private final int supplierNumber;
+    /**
+     * стоимость за единицу топлива, поставляемого данным поставщиком
+     */
+    private final double productCost;
+    private final Delivery[] deliveries;
     private int availableVolume;
-    private double productCost;
-    private Delivery[] deliveries;
 
     public ProductSupplier(int supplierNumber, int fuelVolume, double productCost, Delivery... deliveries) {
         this.supplierNumber = supplierNumber;
@@ -17,7 +26,6 @@ public class ProductSupplier {
         this.deliveries = deliveries;
         Arrays.sort(this.deliveries);
     }
-
 
     public int getSupplierNumber() {
         return supplierNumber;
@@ -31,34 +39,24 @@ public class ProductSupplier {
         return availableVolume;
     }
 
-    public int getDeliveryCost(Station station) {
-        for (var d : deliveries) {
-            if (d.getStation().equals(station)) {
-                return d.getDeliveryCost();
-            }
-        }
-        return -1;
-    }
-
-
     public static Comparator<ProductSupplier> comparatorByCost() {
         return Comparator.comparing(ProductSupplier::getProductCost);
     }
 
-    public boolean availableVolumeNotEmpty() {
+    public boolean isAvailableVolumeNotEmpty() {
         return availableVolume != 0;
     }
 
-    public static Purchase makePurchase(ProductSupplier supplier, Delivery delivery) {
+    public static Shipment makePurchase(ProductSupplier supplier, Delivery delivery) {
         Station station = delivery.getStation();
-        Purchase purchase = new Purchase(supplier, station);
+        Shipment shipment = new Shipment(supplier, station);
 
         int minVolume = Math.min(station.getRequiredVolume(), supplier.getAvailableVolume());
-        purchase.setVolume(minVolume);
+        shipment.setVolume(minVolume);
         supplier.reduceAvailableFuelVolume(minVolume);
-        station.reduceRequiredFuelVolume(minVolume);
+        station.reduceRequiredVolume(minVolume);
 
-        return purchase;
+        return shipment;
     }
 
     private void reduceAvailableFuelVolume(int fuelVolume) {
@@ -69,9 +67,12 @@ public class ProductSupplier {
         return deliveries;
     }
 
+    /**
+     * доставка поставщика к станции
+     */
     public static class Delivery implements Comparable<Delivery> {
-        private Station station;
-        private int deliveryCost;
+        private final Station station;
+        private final int deliveryCost;
 
         public Delivery(Station station, int deliveryCost) {
             this.station = station;
